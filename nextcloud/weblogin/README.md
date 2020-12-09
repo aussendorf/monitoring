@@ -58,4 +58,4 @@ The *DISPLAY* variable reflects the display number used by the virtual X-server 
 
 The file *NextcloudGrafanWidget.json* defines a Grafana-widget showing a stacked graph with measured operations.
 
-![Grafana Image]: (nextcloud-ui.png) "Nextcloud Grafana Image"
+![Grafana Image](nextcloud-ui.png)
