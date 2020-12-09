@@ -20,7 +20,7 @@ If you want to run the script unattended, you will need a virtual X-server Like 
 
 Copy [test_NextCloudUiLogin.py](test_NextCloudUiLogin.py) into a directory of your choice.
 
-Adapt the sample configuration file *NextCloudUiLoginTest.ini* to your needs:
+Adapt the sample configuration file [NextCloudUiLoginTest.ini](NextCloudUiLoginTest.ini) to your needs:
 
 ```
 [NextCloud]
@@ -45,7 +45,7 @@ To run the test and transmit the results, call `./test_nCOberonLogin.py NextClou
 
 ### Crontab
 
-The *crontab.sample* shows a way to run the test regularly:
+The [crontab.sample](crontab.sample) shows a way to run the test regularly:
 ```
 DISPLAY=:99
 PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
@@ -56,6 +56,6 @@ The *DISPLAY* variable reflects the display number used by the virtual X-server 
 
 ### Grafana Graph
 
-The file *NextcloudGrafanWidget.json* defines a Grafana-widget showing a stacked graph with measured operations.
+The file [NextcloudGrafanWidget.json](NextcloudGrafanWidget.json) defines a Grafana-widget showing a stacked graph with measured operations.
 
 ![Grafana Image](nextcloud-ui.png)
