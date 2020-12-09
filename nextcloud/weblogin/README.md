@@ -28,6 +28,8 @@ baseUrl=https://nextcloud.yourdomain.com
 ncUser=monitor
 ncPassword=password
 loginForm=submit-form
+# Number of file to open, count from top in listing
+fileIndex=4
 # depending on Nextcloud version
 # loginForm=submit
 
