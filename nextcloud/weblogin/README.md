@@ -18,7 +18,7 @@ If you want to run the script unattended, you will need a virtual X-server Like 
 
 ### Installation and configuration
 
-Copy *test_NextCloudUiLogin.py* into a directory of your choice.
+Copy [test_NextCloudUiLogin.py](test_NextCloudUiLogin.py) into a directory of your choice.
 
 Adapt the sample configuration file *NextCloudUiLoginTest.ini* to your needs:
 
