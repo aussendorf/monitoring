@@ -1,0 +1,3 @@
+DISPLAY=:99
+PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+*/5 * *  *  *     /usr/local/bin/test_NextCloudUiLogin.py NextCloudUiLoginTest.ini
