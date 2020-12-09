@@ -15,6 +15,7 @@ On success the measured times are transmitted to an InfluxDB and can be shown us
 You will need the Python Module Selenium and a webdriver (geckodriver for example). Please learn more about the Python Selenium module here: https://pypi.org/project/selenium/
 
 If you want to run the script unattended, you will need a virtual X-server Like *Xvfb*. See https://en.wikipedia.org/wiki/Xvfb for information.
+Example command to start Xvfb: `/usr/bin/Xvfb :99 -screen 0 1280x1024x24`
 
 ### Installation and configuration
 
