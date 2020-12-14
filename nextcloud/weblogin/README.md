@@ -17,6 +17,8 @@ You will need the Python Module Selenium and a webdriver (geckodriver for exampl
 If you want to run the script unattended, you will need a virtual X-server Like *Xvfb*. See https://en.wikipedia.org/wiki/Xvfb for information.
 Example command to start Xvfb: `/usr/bin/Xvfb :99 -screen 0 1280x1024x24`
 
+To be able to watch and debug the script while running, you need a working x-display (export) our VNC access.
+
 ### Installation and configuration
 
 Copy [test_NextCloudUiLogin.py](test_NextCloudUiLogin.py) into a directory of your choice.
