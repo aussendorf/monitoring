@@ -15,12 +15,13 @@ On success the measured times are transmitted to an InfluxDB and can be shown us
 You will need the Python Module Selenium and a webdriver (geckodriver for example). Please learn more about the Python Selenium module here: https://pypi.org/project/selenium/
 
 If you want to run the script unattended, you will need a virtual X-server Like *Xvfb*. See https://en.wikipedia.org/wiki/Xvfb for information.
+Example command to start Xvfb: `/usr/bin/Xvfb :99 -screen 0 1280x1024x24`
 
 ### Installation and configuration
 
-Copy *test_NextCloudUiLogin.py* into a directory of your choice.
+Copy [test_NextCloudUiLogin.py](test_NextCloudUiLogin.py) into a directory of your choice.
 
-Adapt the sample configuration file *NextCloudUiLoginTest.ini* to your needs:
+Adapt the sample configuration file [NextCloudUiLoginTest.ini](NextCloudUiLoginTest.ini) to your needs:
 
 ```
 [NextCloud]
@@ -28,6 +29,8 @@ baseUrl=https://nextcloud.yourdomain.com
 ncUser=monitor
 ncPassword=password
 loginForm=submit-form
+# Number of file to open, count from top in listing
+fileIndex=4
 # depending on Nextcloud version
 # loginForm=submit
 
@@ -45,7 +48,7 @@ To run the test and transmit the results, call `./test_nCOberonLogin.py NextClou
 
 ### Crontab
 
-The *crontab.sample* shows a way to run the test regularly:
+The [crontab.sample](crontab.sample) shows a way to run the test regularly:
 ```
 DISPLAY=:99
 PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
@@ -56,6 +59,6 @@ The *DISPLAY* variable reflects the display number used by the virtual X-server 
 
 ### Grafana Graph
 
-The file *NextcloudGrafanWidget.json* defines a Grafana-widget showing a stacked graph with measured operations.
+The file [NextcloudGrafanWidget.json](NextcloudGrafanWidget.json) defines a Grafana-widget showing a stacked graph with measured operations.
 
-![Grafana Image]: (nextcloud-ui.png) "Nextcloud Grafana Image"
+![Grafana Image](nextcloud-ui.png)
