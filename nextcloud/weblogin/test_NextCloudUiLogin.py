@@ -20,10 +20,13 @@ class TestNCOberonLogin():
   def setup_method(self, method):
     self.driver = webdriver.Firefox()
     self.NC_url = config.get("NextCloud", "baseUrl")
+    self.NC_login_suffix = config.get("NextCloud", "loginSuffix", fallback="/login")
     self.NC_user = config.get("NextCloud", "ncUser")
     self.NC_password = config.get("NextCloud", "ncPassword")
     self.NC_fileIndex = config.get("NextCloud", "fileIndex", fallback=3)
     self.NC_loginForm = config.get("NextCloud", "loginForm", fallback="submit")
+    self.NC_logout_text = config.get("NextCloud", "logoutText", fallback="Log out")
+    self.NC_logout_confirm_link_text = config.get("NextCloud", "logoutConfirmLinkText", fallback="Forgot password?")
     self.influx_host = config.get("Influx", "host")
     self.influx_port = config.get("Influx", "port")
     self.influx_database = config.get("Influx", "database")
@@ -35,12 +38,12 @@ class TestNCOberonLogin():
     self.driver.quit()
   
   def test_nCOberonLogin(self):
-    sleepTime = 0.5
+    sleepTime = 2.0
     startTime = time.time()
     # We make one try-catch block for all browser operations to finally catch any failure
     # at the end to ensure correct closing of files and processes
     try:
-        self.driver.get(self.NC_url + "/login")
+        self.driver.get(self.NC_url + self.NC_login_suffix)
         entryPageTime = time.time()
         self.driver.set_window_size(1800, 1020)
         self.driver.find_element(By.ID, "user").click()
@@ -57,9 +60,10 @@ class TestNCOberonLogin():
         # without sleep, sometimes message "not clickable / obscured by other item" appears.
         time.sleep(sleepTime)
         self.driver.find_element(By.CSS_SELECTOR, ".avatardiv > img").click()
-        WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "Log out")))
-        self.driver.find_element(By.LINK_TEXT, "Log out").click()
-        WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.ID, "user")))
+        WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, self.NC_logout_text)))
+        self.driver.find_element(By.LINK_TEXT, self.NC_logout_text).click()
+        #WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.ID, "user")))
+        WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, self.NC_logout_confirm_link_text)))
     except Exception as e:
         print(
             "Error running selenium test on %s. Message: %s"
