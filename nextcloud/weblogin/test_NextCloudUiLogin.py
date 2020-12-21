@@ -16,7 +16,7 @@ import configparser
 import argparse
 
 
-class TestNCOberonLogin():
+class test_NClogin():
   def setup_method(self, method):
     self.driver = webdriver.Firefox()
     self.NC_url = config.get("NextCloud", "baseUrl")
@@ -37,8 +37,8 @@ class TestNCOberonLogin():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_nCOberonLogin(self):
-    sleepTime = 2.0
+  def test_NCoperations(self):
+    sleepTime = 0.1
     startTime = time.time()
     # We make one try-catch block for all browser operations to finally catch any failure
     # at the end to ensure correct closing of files and processes
@@ -54,15 +54,61 @@ class TestNCOberonLogin():
         loginSucceedTime = time.time()
         self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(%s) .innernametext" %self.NC_fileIndex).click()
         WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".header-close")))
-        self.driver.find_element(By.CSS_SELECTOR, ".header-close").click()
+    except Exception as e:
+        print(
+            "Error running selenium test on %s. Message: %s"
+            % (self.NC_url, e)
+            )
+        return None
+    # Sometimes the close-button is present but is kept hidden by a mouse-over tool-tip 'close'
+    # We re-try until the tool-tip has disappeared
+    maxTries = 24
+    closed_clicked = False
+    counter = 0
+    while (counter < maxTries and not closed_clicked):
+        try:
+            self.driver.find_element(By.CSS_SELECTOR, ".header-close").click()
+            closed_clicked = True
+        except Exception as e:
+            # Could not click close button
+            counter += 1
+            closed_clicked = False
+            close_message = e
+            time.sleep(sleepTime)
+            #print (counter)
+    if (not closed_clicked):
+        print ("Could not close document window - Last message was: %s" %close_message)
+        return None
+    try:
         WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".avatardiv > img")))
-        showDoneTime = time.time()
-        # without sleep, sometimes message "not clickable / obscured by other item" appears.
-        time.sleep(sleepTime)
-        self.driver.find_element(By.CSS_SELECTOR, ".avatardiv > img").click()
-        WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, self.NC_logout_text)))
-        self.driver.find_element(By.LINK_TEXT, self.NC_logout_text).click()
-        #WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.ID, "user")))
+    except Exception as e:
+        print(
+            "Error running selenium test on %s. Message: %s"
+            % (self.NC_url, e)
+            )
+        return None
+    showDoneTime = time.time()
+    # extra try block for logout as this has troubles with not clickable objects
+    counter = 0
+    logout_clicked = False
+    logout_message = ""
+    while (counter < maxTries and not logout_clicked):
+        try:
+            self.driver.find_element(By.CSS_SELECTOR, ".avatardiv > img").click()
+            WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, self.NC_logout_text)))
+            self.driver.find_element(By.LINK_TEXT, self.NC_logout_text).click()
+            logout_clicked = True
+        except Exception as e:
+            # could not click logout text
+            counter += 1
+            logout_clicked = False
+            logout_message = e
+            time.sleep(sleepTime)
+            #print (counter)
+    if (not logout_clicked):
+        print ("Could not logout - Last message was: %s" %logout_message)
+        return None
+    try:
         WebDriverWait(self.driver, 30000).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, self.NC_logout_confirm_link_text)))
     except Exception as e:
         print(
@@ -75,8 +121,8 @@ class TestNCOberonLogin():
     entryPageDuration = entryPageTime - startTime
     loginTimeDuration = loginSucceedTime - entryPageTime
     showDocumentDuration = showDoneTime - loginSucceedTime
-    logoutDuration = doneTime - showDoneTime - sleepTime
-    totalDuration = doneTime - startTime - sleepTime
+    logoutDuration = doneTime - showDoneTime
+    totalDuration = doneTime - startTime
     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
     json_body = [
     {
@@ -98,6 +144,7 @@ class TestNCOberonLogin():
     try:
         client = InfluxDBClient(host=self.influx_host, port=self.influx_port)
         client.switch_database(self.influx_database)
+        #print (json_body)
         client.write_points(json_body)
     except Exception as e:
         print(
@@ -112,8 +159,8 @@ args = parser.parse_args()
 config = configparser.ConfigParser()
 config.read(args.configfile)
 
-testClass = TestNCOberonLogin()
+testClass = test_NClogin()
 
 testClass.setup_method("")
-testClass.test_nCOberonLogin()
+testClass.test_NCoperations()
 testClass.teardown_method("")
