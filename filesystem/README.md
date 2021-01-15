@@ -32,9 +32,9 @@ testDir=/tmp
 [Influx]
 host=influxhost
 port=8086
-database=dbname
-measurement=MySQL_Query
-myhostname=mysql_hostname
+database=test
+measurement=FileSystem
+myhostname=hostname
 ```
 
 ### Run
