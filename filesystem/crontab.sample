@@ -1,3 +1,2 @@
-DISPLAY=:99
 PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 */5 * *  *  *    /usr/local/bin/test_fileSystemOperations.py fs_test.ini 
